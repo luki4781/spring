@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="join">
+	<insert id="addOne">
+		insert into
+		member(id,pass,email) values(#{id}, #{pass}, #{email})
+	</insert>
+
+	<insert id="addDetail">
+		insert into
+		detail(id) values(#{id})
+	</insert>
+
+	<select id="checkByIdMailAndPass" resultType="java.lang.Integer">
+		select (*) from member where (id=#{idmail} or email=#{idmail}) 
+			and pass=#{passs,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

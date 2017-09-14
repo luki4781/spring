@@ -10,7 +10,11 @@
 	<mvc:annotation-driven />
 	<mvc:default-servlet-handler />
 	<context:component-scan base-package="org.itbank.app" />
+	<context:component-scan base-package="org.itbank.app.controll" />
+	<context:component-scan base-package="org.itbank.app.model" />
 
+	<context:property-placeholder location="classpath:/jdbc.properties" />
+	
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />
@@ -23,6 +27,7 @@
 	<bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 		<property name="definitions">
 			<list>
+				<value>/WEB-INF/config/tiles-config.xml</value>
 			</list>
 		</property>
 	</bean>
@@ -38,6 +43,7 @@
 		<property name="dataSource" ref="ds" />
 		<property name="mapperLocations">
 			<list>
+				<value>/WEB-INF/mapper/*-mapper.xml</value>
 			</list>
 		</property>
 	</bean>
