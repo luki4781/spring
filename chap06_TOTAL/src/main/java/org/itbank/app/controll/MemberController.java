@@ -2,6 +2,7 @@ package org.itbank.app.controll;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -10,6 +11,11 @@ public class MemberController {
 
 	@GetMapping("/info")
 	public String infoHandle() {
+		return "t_expr";
+	}
+	
+	@PostMapping("/info")
+	public String infoHostHandle() {
 		return "t_expr";
 	}
 }
