@@ -10,9 +10,14 @@
 	<mvc:annotation-driven />
 	<mvc:default-servlet-handler />
 	<context:component-scan base-package="org.itbank.app" />
-	<context:component-scan base-package="org.itbank.app.controll" />
-	<context:component-scan base-package="org.itbank.app.model" />
 
+	
+	<!-- multipartResolver 등록 (이름으로 뽑아서 처리 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="uploadTempDir" value="/temp"/>
+		<property name="defaultEncoding" value="utf-8"/>
+	</bean>
+	
 	<context:property-placeholder location="classpath:/jdbc.properties" />
 	
 	<bean
@@ -57,6 +62,8 @@
 	</bean>
 	<!-- about converter -->
 	<bean class="com.fasterxml.jackson.databind.ObjectMapper" />
+	<bean class="java.text.SimpleDateFormat">
+		<constructor-arg name="pattern" value="yyyyMMddHHmmss"/>
+	</bean>
 	
-
 </beans>

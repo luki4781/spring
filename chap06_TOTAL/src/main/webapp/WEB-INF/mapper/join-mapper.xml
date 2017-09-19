@@ -5,7 +5,8 @@
 <mapper namespace="join">
 	<insert id="addOne">
 		insert into
-		member(id,pass,email) values(#{id}, #{pass}, #{email})
+		member(id,pass,email) values(#{id},
+		#{pass}, #{email})
 	</insert>
 
 	<insert id="addDetail">
@@ -13,9 +14,64 @@
 		detail(id) values(#{id})
 	</insert>
 
-	<select id="checkByIdMailAndPass" resultType="java.lang.Integer">
-		select (*) from member where (id=#{idmail} or email=#{idmail}) 
-			and pass=#{passs,jdbcType=VARCHAR}
+	<select id="checkByIdmailAndPass" resultType="java.lang.Integer">
+		select count(*)
+		from
+		member where (id=#{idmail} or email=#{idmail})
+		and
+		pass=#{pass,jdbcType=VARCHAR}
+	</select>
+	<select id="readOneByIdOrEmail" resultType="java.util.HashMap">
+		select m.*, d.* from
+		member m join detail d on m.id = d.id
+		where (m.id=#{idmail} or
+		m.email=#{idmail})
+	</select>
+	<select id="readOneById" resultType="java.util.HashMap">
+		select m.*, d.* from member
+		m join detail d on m.id = d.id
+		where m.id=#{id}
+	</select>
+	<update id="updateOneDetail">
+		update detail set name=#{name}, gender=#{gender},
+		birth=#{birth}, address=#{address}
+		where id=#{id}
+	</update>
+
+	<select id="memberListWith" resultType="java.util.HashMap">
+		select * from (
+		select
+		rownum as r, t.* from (
+		select * from profile where id=#{id} order by
+		regdate desc
+		) t
+		) where r &gt;=#{start} and r&lt;=#{end}
 	</select>
 
+	<select id="memberList" resultType="java.util.HashMap">
+		select m.*, p.* from member m
+		left join
+		(select id, max(URL) as URL from profile group by id) p on
+		m.id = p.id
+		order
+		by m.id asc
+	</select>
+
+	<select id="memberListFive" resultType="java.util.HashMap">
+		select * from (
+		select rownum as r, t.* from (
+		select m.*, p.URL from member m left join
+		(select id, max(URL) as URL from profile group by id) p on m.id = p.id
+		order by m.id asc
+		) t
+		) where r between #{start} and #{end }
+	</select>
+
+	<select id="memberListCount" resultType="java.lang.Integer">
+		select count(*) as cnt
+		from member m left join
+		(select id, max(URL) as URL from profile group
+		by id) p on m.id = p.id
+		order by m.id asc
+	</select>
 </mapper>

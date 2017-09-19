@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="profile">
+
+	<insert id="resisterProfile">
+		insert into profile values(profile_seq.nextval, #{id}, #{url}, sysdate)
+	</insert>
+	
+	<select id="resisteredId" resultType="java.util.HashMap">
+		select * from (select * from profile where id=#{id} order by regdate
+		desc) where rownum=1
+	</select>
+	
+	<select id="resisteredAll" resultType="java.util.HashMap">
+		select * from profile where id=#{id} order by regdate desc
+	</select>
+	
+</mapper>
