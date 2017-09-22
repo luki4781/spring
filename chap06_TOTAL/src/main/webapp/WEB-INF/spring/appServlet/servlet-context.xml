@@ -1,36 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://www.springframework.org/schema/beans"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:websocket="http://www.springframework.org/schema/websocket"
 	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
-	
+
 	<mvc:annotation-driven />
 	<mvc:default-servlet-handler />
 	<context:component-scan base-package="org.itbank.app" />
-
 	
-	<!-- multipartResolver 등록 (이름으로 뽑아서 처리 -->
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="uploadTempDir" value="/temp"/>
-		<property name="defaultEncoding" value="utf-8"/>
+	<!-- mailSender -->
+	<bean class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com"/>
+		<property name="port" value="587"/>
+		<property name="username" value="wepappstudent"/>
+		<property name="password" value="1s2s3s!!"/>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>		
+		</property>
 	</bean>
 	
+	<!-- multipartResolver 등록 (이름으로 뽑아서 처리 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="uploadTempDir" value="/temp" />
+		<property name="defaultEncoding" value="utf-8" />
+	</bean>
+
 	<!-- websocket handler -->
-	<bean class="org.itbank.app.controll.ws.BasicWSController" id="bws"/>
-	
+	<bean class="org.itbank.app.controll.ws.BasicWSController" id="bws" />
+
 	<websocket:handlers>
-		<websocket:mapping handler="bws" path="/ws/basic"/>
-		<websocket:mapping handler="cws" path="/ws/chat"/>
-		<websocket:mapping handler="aws" path="/ws/alert"/>
+		<websocket:mapping handler="bws" path="/ws/basic" />
+		<websocket:mapping handler="cws" path="/ws/chat" />
+		<websocket:mapping handler="aws" path="/ws/alert" />
+		<websocket:mapping handler="lws" path="/ws/login" />
+
+
+		<websocket:handshake-interceptors>
+			<bean
+				class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" />
+		</websocket:handshake-interceptors>
 	</websocket:handlers>
 
 	<context:property-placeholder location="classpath:/jdbc.properties" />
-	
+
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />
@@ -47,7 +67,7 @@
 			</list>
 		</property>
 	</bean>
-	<!-- about DataBase  -->	
+	<!-- about DataBase -->
 	<context:property-placeholder location="classpath:/jdbc.properties" />
 	<bean class="com.mchange.v2.c3p0.ComboPooledDataSource" id="ds">
 		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
@@ -74,7 +94,7 @@
 	<!-- about converter -->
 	<bean class="com.fasterxml.jackson.databind.ObjectMapper" />
 	<bean class="java.text.SimpleDateFormat">
-		<constructor-arg name="pattern" value="yyyyMMddHHmmss"/>
+		<constructor-arg name="pattern" value="yyyyMMddHHmmss" />
 	</bean>
-	
+
 </beans>

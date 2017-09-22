@@ -59,7 +59,8 @@
 
 	<select id="memberListFive" resultType="java.util.HashMap">
 		select * from (
-		select rownum as r, t.* from (
+		select
+		rownum as r, t.* from (
 		select m.*, p.URL from member m left join
 		(select id, max(URL) as URL from profile group by id) p on m.id = p.id
 		order by m.id asc
@@ -74,4 +75,6 @@
 		by id) p on m.id = p.id
 		order by m.id asc
 	</select>
+
+
 </mapper>

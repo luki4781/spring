@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="market">
+	<insert id="addOne">
+		insert into market values(market_seq.nextval,
+		#{pname}, #{sprice}, #{iprice, jdbcType=NUMERIC},
+		#{cdate,jdbcType=DATE})
+	</insert>
+	<select id="searchBySprice1" resultType="java.util.HashMap">
+		select * from market where sprice &lt; #{sprice}
+	</select>
+	<select id="searchBySprice2" resultType="java.util.HashMap">
+		<![CDATA[
+			select * from market where sprice < #{sprice} and iprice is not null
+		]]>
+	</select>
+	<select id="searchBySprice" resultType="java.util.HashMap">
+		select * from market where sprice &lt; #{sprice}
+		<if test="mode != null">
+			 and iprice is not null
+		</if>
+	</select>
+	<select id="getAll" resultType="java.util.HashMap">
+		select p.cdate-sysdate as gab, p.* from market p
+	</select>
+	<select id="getOne" resultType="java.util.HashMap">
+		select p.cdate-sysdate as gab, p.* from market p where num=#{num}
+	</select>
+</mapper>
+
+
+
+
