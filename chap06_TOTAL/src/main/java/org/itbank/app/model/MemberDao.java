@@ -13,6 +13,18 @@ public class MemberDao {
 	@Autowired
 	SqlSessionTemplate template;
 	
+	public List<Map> countByScore() {
+		return template.selectList("join.countByScore");
+	}
+
+	public List<Map> countByGender() {
+		return template.selectList("join.countByGender");
+	}
+	
+	public List<Map>readId(String id) {
+		return template.selectList("join.searchById",id);
+	}
+	
 	public boolean addOne(Map map) {
 		template.insert("join.addOne",map);
 		template.insert("join.addDetail", map);

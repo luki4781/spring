@@ -3,6 +3,18 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="join">
+	<select id="countByScore" resultType="java.util.HashMap">
+		select score||'점' as score, count(*) as cnt from research group by score order by score asc	
+	</select>
+
+	<select id="countByGender" resultType="java.util.HashMap">
+		select nvl(gender, '미설정') as gender, count(*) as cnt from detail group by gender	
+	</select>
+
+	<select id="searchById" resultType="java.util.HashMap">
+		select  * from member where id like #{id}
+	</select>
+	
 	<insert id="addOne">
 		insert into
 		member(id,pass,email) values(#{id},

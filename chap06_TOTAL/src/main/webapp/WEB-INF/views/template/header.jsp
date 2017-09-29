@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<div align="center">
+<div align="center" class="jumbotron" style="margin-bottom: 0px;">
 	<h1>SPRING WEB MVC</h1>
 	<p id="alt">
 	
